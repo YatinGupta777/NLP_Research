@@ -63,7 +63,8 @@ for i in bagsofwords:
         syns = wordnet.synsets(key)
         temp = i[key]
         for x in syns:
-            temp_dict[x.lexname()] = temp
+            if not x.lexname().startswith('adj'):
+                temp_dict[x.lexname()] = temp
     bagsofwords[m] = temp_dict
     m = m + 1
         
