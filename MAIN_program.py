@@ -9,7 +9,8 @@ import collections, re
 stop_words = set(stopwords.words('english')) 
  
 #tokenized = reuters.words()
- 
+from sklearn.feature_extraction.text import CountVectorizer
+vectorizer = CountVectorizer()
 
 document_vector = []
 
@@ -44,7 +45,6 @@ for fname in reuters.fileids():
             #for x in syns:
              #   final_list.append(x.lexname())
             final_string += tagged[0][0] + " "
-            #print(stemming(tagged[0][0]))
         
     document_vector.append(final_string)
         
@@ -55,6 +55,20 @@ for fname in reuters.fileids():
         #print(tagged) 
 bagsofwords = [ collections.Counter(re.findall(r'\w+', txt))
            for txt in document_vector]
+
+m= 0 
+for i in bagsofwords:
+    temp_dict = {}
+    for key in i:
+        syns = wordnet.synsets(key)
+        temp = i[key]
+        for x in syns:
+            temp_dict[x.lexname()] = temp
+    bagsofwords[m] = temp_dict
+    m = m + 1
+        
+for i in bagsofwords:
+    print (i) 
 #print(document_vector)
 
 # Get the collocations that don't contain stop-words
