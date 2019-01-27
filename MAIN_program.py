@@ -4,6 +4,8 @@ import nltk
 from nltk.corpus import stopwords 
 from nltk.tokenize import word_tokenize, sent_tokenize 
 from nltk.stem.porter import PorterStemmer
+from nltk.corpus import wordnet
+
 stop_words = set(stopwords.words('english')) 
  
 #tokenized = reuters.words()
@@ -36,7 +38,12 @@ for fname in reuters.fileids():
         # tagger or POS-tagger.  
         tagged = nltk.pos_tag(wordsList) 
         if tagged:
-            final_list.append(stemming(tagged[0][0]))
+            word = stemming(tagged[0][0])
+            syns = wordnet.synsets(word)
+            
+            for x in syns:
+                final_list.append(x.name())
+            #final_list.append(stemming(tagged[0][0]))
             #print(stemming(tagged[0][0]))
         
     document_vector.append(final_list)
@@ -47,7 +54,7 @@ for fname in reuters.fileids():
            #print(tagged[0][0])
         #print(tagged) 
 
-print(document_vector)
+#print(document_vector)
 
 # Get the collocations that don't contain stop-words
 #text.collocations() 
