@@ -42,7 +42,7 @@ for fname in reuters.fileids():
             syns = wordnet.synsets(word)
             
             for x in syns:
-                final_list.append(x.name())
+                final_list.append(x.lexname())
             #final_list.append(stemming(tagged[0][0]))
             #print(stemming(tagged[0][0]))
         
