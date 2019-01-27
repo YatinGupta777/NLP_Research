@@ -5,11 +5,12 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize, sent_tokenize 
 from nltk.stem.porter import PorterStemmer
 from nltk.corpus import wordnet
-
+import collections, re
 stop_words = set(stopwords.words('english')) 
  
 #tokenized = reuters.words()
- 
+from sklearn.feature_extraction.text import CountVectorizer
+vectorizer = CountVectorizer()
 
 document_vector = []
 
@@ -24,7 +25,7 @@ def stemming(word):
 for fname in reuters.fileids():
     
     tokenized = reuters.words(fname)
-    final_list = []
+    final_string = ""
     for i in tokenized: 
         
         # Word tokenizers is used to find the words  
@@ -41,19 +42,33 @@ for fname in reuters.fileids():
             word = stemming(tagged[0][0])
             syns = wordnet.synsets(word)
             
-            for x in syns:
-                final_list.append(x.lexname())
-            #final_list.append(stemming(tagged[0][0]))
-            #print(stemming(tagged[0][0]))
+            #for x in syns:
+             #   final_list.append(x.lexname())
+            final_string += tagged[0][0] + " "
         
-    document_vector.append(final_list)
+    document_vector.append(final_string)
         
     '''to produce an output for testing''' 
     if len(document_vector) > 100:
         break
            #print(tagged[0][0])
         #print(tagged) 
+bagsofwords = [ collections.Counter(re.findall(r'\w+', txt))
+           for txt in document_vector]
 
+m= 0 
+for i in bagsofwords:
+    temp_dict = {}
+    for key in i:
+        syns = wordnet.synsets(key)
+        temp = i[key]
+        for x in syns:
+            temp_dict[x.lexname()] = temp
+    bagsofwords[m] = temp_dict
+    m = m + 1
+        
+for i in bagsofwords:
+    print (i) 
 #print(document_vector)
 
 # Get the collocations that don't contain stop-words
