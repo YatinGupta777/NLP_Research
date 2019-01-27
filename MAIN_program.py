@@ -3,24 +3,43 @@ from nltk.corpus import reuters
 import nltk 
 from nltk.corpus import stopwords 
 from nltk.tokenize import word_tokenize, sent_tokenize 
+from nltk.stem.porter import PorterStemmer
 stop_words = set(stopwords.words('english')) 
  
 tokenized = reuters.words()
  
+final_list = []
+
+def stemming(word):
+    
+    # stemming of words
+    porter = PorterStemmer()
+    stemmed = porter.stem(word)
+         
+    return stemmed   
+
 for i in tokenized: 
       
     # Word tokenizers is used to find the words  
     # and punctuation in a string 
     wordsList = nltk.word_tokenize(i) 
-  
+    
     # removing stop words from wordList 
     wordsList = [w for w in wordsList if not w in stop_words]  
-  
+    
     #  Using a Tagger. Which is part-of-speech  
     # tagger or POS-tagger.  
     tagged = nltk.pos_tag(wordsList) 
-  
-    print(tagged) 
+    if tagged:
+        final_list.append(stemming(tagged[0][0]))
+        #print(stemming(tagged[0][0]))
+    '''to produce an output'''    
+    if len(final_list) > 100:
+        break
+       #print(tagged[0][0])
+    #print(tagged) 
+
+print(final_list)
 
 # Get the collocations that don't contain stop-words
 #text.collocations() 
