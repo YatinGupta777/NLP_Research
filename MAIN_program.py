@@ -37,7 +37,7 @@ for fname in reuters.fileids():
         
         #  Using a Tagger. Which is part-of-speech  
         # tagger or POS-tagger.  
-        tagged = nltk.pos_tag(wordsList) 
+        tagged = nltk.pos_tag(wordsList)
         if tagged:
             word = stemming(tagged[0][0])
             syns = wordnet.synsets(word)
@@ -63,32 +63,12 @@ for i in bagsofwords:
         syns = wordnet.synsets(key)
         temp = i[key]
         for x in syns:
-            temp_dict[x.lexname()] = temp
+            if x.lexname() in temp_dict:
+                temp_dict[x.lexname()] += temp
+            else:
+                temp_dict[x.lexname()] = temp
     bagsofwords[m] = temp_dict
     m = m + 1
         
 for i in bagsofwords:
     print (i) 
-#print(document_vector)
-
-# Get the collocations that don't contain stop-words
-#text.collocations() 
-# United States; New York; per cent; Rhode Island; years ago; Los Angeles; White House; ...
- 
-# Get words that appear in similar contexts
-#text.similar('Monday', 5) 
-# april march friday february january
- 
-# Get common contexts for a list of words
-#text.common_contexts(['August', 'June']) 
-# since_a in_because last_when between_and last_that and_at ...
- 
-# Get contexts for a word
-#text.concordance('Monday')
-# said . Trade Minister Saleh said on Monday that Indonesia , as the world ' s s
-# Reuters to clarify his statement on Monday in which he said the pact should be
-#  the 11 - member CPA which began on Monday . They said producers agreed that c
-# ief Burkhard Junger was arrested on Monday on suspicion of embezzlement and of
-# ween one and 1 . 25 billion dlrs on Monday and Tuesday . The spokesman said Mo
-# ay and Tuesday . The spokesman said Monday ' s float included 500 mln dlrs in 
- 
