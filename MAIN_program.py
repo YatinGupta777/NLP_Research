@@ -44,7 +44,7 @@ for fname in reuters.fileids():
         
         #  Using a Tagger. Which is part-of-speech  
         # tagger or POS-tagger.  
-        tagged = nltk.pos_tag(wordsList) 
+        tagged = nltk.pos_tag(wordsList)
         if tagged:
             word = stemming(tagged[0][0])
             syns = wordnet.synsets(word)
@@ -70,7 +70,10 @@ for i in bagsofwords:
         syns = wordnet.synsets(key)
         temp = i[key]
         for x in syns:
-            temp_dict[x.lexname()] = temp
+            if x.lexname() in temp_dict:
+                temp_dict[x.lexname()] += temp
+            else:
+                temp_dict[x.lexname()] = temp
     bagsofwords[m] = temp_dict
     m = m + 1
         
