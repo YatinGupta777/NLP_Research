@@ -7,7 +7,8 @@ from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.stem.porter import PorterStemmer
 from nltk.corpus import wordnet
 import collections, re
-
+import numpy, scipy.io
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 import skfuzzy as fuzz
@@ -76,39 +77,57 @@ for i in bagsofwords:
     m = m + 1
         
 #for i in bagsofwords:
- #   print (i) 
+ #   print (i)
+ 
+# Creating file for matlab 
+#scipy.io.savemat(os.path.expanduser("~/Desktop/arrdata.mat"), mdict={'arr': bagsofwords})
+
     
+'''Fuzzy C Means'''
 
 colors = ['b', 'orange', 'g', 'r', 'c', 'm', 'y', 'k', 'Brown', 'ForestGreen']
 
-# Define three cluster centers
-centers = [[4, 2],
-           [1, 7],
-           [5, 6]]
-
+# =============================================================================
+# # Define three cluster centers
+# centers = [[4, 2],
+#            [1, 7],
+#            [5, 6]]
+# 
+# =============================================================================
 # Define three cluster sigmas in x and y, respectively
-sigmas = [[0.8, 0.3],
-          [0.3, 0.5],
-          [1.1, 0.7]]
-
+# =============================================================================
+# sigmas = [[0.8, 0.3],
+#           [0.3, 0.5],
+#           [1.1, 0.7]]
+# 
+# =============================================================================
 # Generate test data
 np.random.seed(42)  # Set seed for reproducibility
 xpts = np.zeros(1)
 ypts = np.zeros(1)
 labels = np.zeros(1)
-for j in bagsofwords:
-    for i, ((xmu, ymu), (xsigma, ysigma)) in enumerate(zip(centers, sigmas)):
-        xpts = np.hstack((xpts, bagsofwords[j]* xsigma + xmu))
-        ypts = np.hstack((ypts, bagsofwords[j] * ysigma + ymu))
-        labels = np.hstack((labels, np.ones(200) * i))
+x = 0
+
+for i in bagsofwords:
+    x = x + 1
+    for key in i:
+        xpts = np.hstack((xpts, x))
+        ypts = np.hstack((ypts, i[key]))
+        #labels = np.hstack((labels, np.ones(200) * (x-1)))
+        
+    '''to produce an output for testing''' 
+    if x > 100:
+        break
 
 # Visualize the test data
-fig0, ax0 = plt.subplots()
-for label in range(3):
-    ax0.plot(xpts[labels == label], ypts[labels == label], '.',
-             color=colors[label])
-ax0.set_title('Test data: 200 points x3 clusters.')
-
+# =============================================================================
+# fig0, ax0 = plt.subplots()
+# for label in xpts:
+#     ax0.plot(xpts[label], ypts[label], '.',
+#              color=colors[label%8])
+# ax0.set_title('Test data: 200 points x3 clusters.')
+# 
+# =============================================================================
 # Set up the loop and plot
 fig1, axes1 = plt.subplots(3, 3, figsize=(8, 8))
 alldata = np.vstack((xpts, ypts))
