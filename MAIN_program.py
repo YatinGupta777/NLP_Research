@@ -1,5 +1,3 @@
-
-    
 from __future__ import division, print_function
 from nltk import Text
 from nltk.corpus import reuters
@@ -77,8 +75,8 @@ for i in bagsofwords:
     bagsofwords[m] = temp_dict
     m = m + 1
         
-for i in bagsofwords:
-    print (i) 
+#for i in bagsofwords:
+ #   print (i) 
     
 
 colors = ['b', 'orange', 'g', 'r', 'c', 'm', 'y', 'k', 'Brown', 'ForestGreen']
@@ -98,10 +96,10 @@ np.random.seed(42)  # Set seed for reproducibility
 xpts = np.zeros(1)
 ypts = np.zeros(1)
 labels = np.zeros(1)
-for j in bagofwords:
+for j in bagsofwords:
     for i, ((xmu, ymu), (xsigma, ysigma)) in enumerate(zip(centers, sigmas)):
-        xpts = np.hstack((xpts, bagofwords[j]* xsigma + xmu))
-        ypts = np.hstack((ypts, bagofwords[j] * ysigma + ymu))
+        xpts = np.hstack((xpts, bagsofwords[j]* xsigma + xmu))
+        ypts = np.hstack((ypts, bagsofwords[j] * ysigma + ymu))
         labels = np.hstack((labels, np.ones(200) * i))
 
 # Visualize the test data
@@ -137,26 +135,3 @@ for ncenters, ax in enumerate(axes1.reshape(-1), 2):
     ax.axis('off')
 
 fig1.tight_layout()
-#print(document_vector)
-
-# Get the collocations that don't contain stop-words
-#text.collocations() 
-# United States; New York; per cent; Rhode Island; years ago; Los Angeles; White House; ...
- 
-# Get words that appear in similar contexts
-#text.similar('Monday', 5) 
-# april march friday february january
- 
-# Get common contexts for a list of words
-#text.common_contexts(['August', 'June']) 
-# since_a in_because last_when between_and last_that and_at ...
- 
-# Get contexts for a word
-#text.concordance('Monday')
-# said . Trade Minister Saleh said on Monday that Indonesia , as the world ' s s
-# Reuters to clarify his statement on Monday in which he said the pact should be
-#  the 11 - member CPA which began on Monday . They said producers agreed that c
-# ief Burkhard Junger was arrested on Monday on suspicion of embezzlement and of
-# ween one and 1 . 25 billion dlrs on Monday and Tuesday . The spokesman said Mo
-# ay and Tuesday . The spokesman said Monday ' s float included 500 mln dlrs in 
- 
