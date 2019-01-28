@@ -154,3 +154,7 @@ for ncenters, ax in enumerate(axes1.reshape(-1), 2):
     ax.axis('off')
 
 fig1.tight_layout()
+fig2, ax2 = plt.subplots()
+ax2.plot(np.r_[2:11], fpcs)
+ax2.set_xlabel("Number of centers")
+ax2.set_ylabel("Fuzzy partition coefficient")
