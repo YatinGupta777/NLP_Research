@@ -24,6 +24,7 @@ for i, ((xmu, ymu), (xsigma, ysigma)) in enumerate(zip(centers, sigmas)):
     xpts = np.hstack((xpts, np.random.standard_normal(200) * xsigma + xmu))
     ypts = np.hstack((ypts, np.random.standard_normal(200) * ysigma + ymu))
     labels = np.hstack((labels, np.ones(200) * i))
+    print (i)
 
 # Visualize the test data
 fig0, ax0 = plt.subplots()

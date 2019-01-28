@@ -158,3 +158,17 @@ fig2, ax2 = plt.subplots()
 ax2.plot(np.r_[2:11], fpcs)
 ax2.set_xlabel("Number of centers")
 ax2.set_ylabel("Fuzzy partition coefficient")
+
+
+'''Building model on 3 clusters'''
+cntr, u_orig, _, _, _, _, _ = fuzz.cluster.cmeans(
+    alldata, 3, 2, error=0.005, maxiter=1000)
+
+# Show 3-cluster model
+fig2, ax2 = plt.subplots()
+ax2.set_title('Trained model')
+for j in range(3):
+    ax2.plot(alldata[0, u_orig.argmax(axis=0) == j],
+             alldata[1, u_orig.argmax(axis=0) == j], 'o',
+             label='series ' + str(j))
+ax2.legend()
