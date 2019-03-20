@@ -60,3 +60,7 @@ with open('questions.txt',encoding="ISO-8859-1",newline='') as f:
 		
 f.close()
 fout.close()
+
+
+#Source
+#https://github.com/ellisa1419/Wordnet-Query-Expansion
