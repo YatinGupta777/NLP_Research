@@ -81,6 +81,24 @@ for x in filtered_sentence:
                 word_data.append(k.name().partition('.')[0])
                 G.add_node(k.name().partition('.')[0])
                 G.add_edge(h.name().partition('.')[0],k.name().partition('.')[0])
+                
+                for j in k.hypernyms():
+                    #print (h)
+                    word_data.append(j.name().partition('.')[0])
+                    G.add_node(j.name().partition('.')[0])
+                    G.add_edge(k.name().partition('.')[0],j.name().partition('.')[0])
+                    
+                    for a in j.hypernyms():
+                        #print (h)
+                        word_data.append(a.name().partition('.')[0])
+                        G.add_node(a.name().partition('.')[0])
+                        G.add_edge(j.name().partition('.')[0],a.name().partition('.')[0])
+                        
+                        for b in a.hypernyms():
+                            #print (h)
+                            word_data.append(b.name().partition('.')[0])
+                            G.add_node(b.name().partition('.')[0])
+                            G.add_edge(a.name().partition('.')[0],b.name().partition('.')[0])
             
         for h in w.hyponyms():
             #print (h)
@@ -93,6 +111,24 @@ for x in filtered_sentence:
                 word_data.append(k.name().partition('.')[0])
                 G.add_node(k.name().partition('.')[0])
                 G.add_edge(h.name().partition('.')[0],k.name().partition('.')[0])
+                
+                for j in k.hyponyms():
+                    #print (h)
+                    word_data.append(j.name().partition('.')[0])
+                    G.add_node(j.name().partition('.')[0])
+                    G.add_edge(k.name().partition('.')[0],j.name().partition('.')[0])
+                    
+                    for a in j.hyponyms():
+                        #print (h)
+                        word_data.append(a.name().partition('.')[0])
+                        G.add_node(a.name().partition('.')[0])
+                        G.add_edge(j.name().partition('.')[0],a.name().partition('.')[0])
+                        
+                        for b in a.hyponyms():
+                            #print (h)
+                            word_data.append(b.name().partition('.')[0])
+                            G.add_node(b.name().partition('.')[0])
+                            G.add_edge(a.name().partition('.')[0],b.name().partition('.')[0])                
 
 
 bw_centrality = nx.betweenness_centrality(G, normalized=False)
