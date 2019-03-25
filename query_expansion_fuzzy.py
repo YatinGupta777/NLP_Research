@@ -28,7 +28,7 @@ stop_words=set(stopwords.words("english"))
 # fout = open("QUERIES_for_training_Expanded","w", encoding="utf-8")
 # 
 # =============================================================================
-test_string = "Homemade glass cleaner?"
+test_string = "Homemade glass cleaner ?"
 
 word_data = []
 
@@ -61,12 +61,25 @@ def intersection(lst1, lst2):
 
 '''For Test String'''
 
+'''POS TAGGING'''
 test_string = test_string.replace('\n','')
 ''.join([i for i in test_string if i.isalpha()])
 wordsList = nltk.word_tokenize(test_string) 
 filtered_sentence = [w for w in wordsList if not w in stop_words]
+tagged = nltk.pos_tag(wordsList) 
+#Adjective,Adverb,verb,noun
+tag_list = ["JJ","JJS","JJR","NN","NNS","NNP","NNPS","RB","RBR","RBS","VB","VBD","VBG","VBN","VBP","VBZ","WRB"]
+x = []
+for i in tagged:
+    if(i[1] in tag_list):
+        x.append(i[0])
+    
+filtered_sentence = x
+'''STEMMING'''
+x = []
 for i in filtered_sentence:
-    i = stemming(i)
+    x.append(stemming(i))
+filtered_sentence = x
 
 for x in filtered_sentence:
     word = Word(x)
