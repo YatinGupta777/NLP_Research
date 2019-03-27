@@ -185,10 +185,16 @@ for u,v,a in G.edges(data=True):
 bw_centrality = nx.betweenness_centrality(G, normalized=True,weight='weight')
 d_centrality = nx.degree_centrality(G)
 c_centrality = nx.closeness_centrality(G,distance='weight')
+pr = nx.pagerank_numpy(G, alpha=0.9,weight='weight')
+hub,authority=nx.hits_numpy(G)
+
 
 avg_bw = 0
 avg_d = 0
 avg_c = 0
+avg_pr = 0
+avg_hub = 0
+avg_authority = 0
 
 for i in bw_centrality:
     avg_bw += bw_centrality[i]
@@ -205,9 +211,26 @@ for i in c_centrality:
 
 avg_c = avg_c/len(c_centrality)
 
+for i in pr:
+    avg_pr += pr[i]
+
+avg_pr= avg_pr/len(pr)
+
+for i in hub:
+    avg_hub += hub[i]
+
+avg_hub = avg_hub/len(hub)
+for i in authority:
+    avg_authority += authority[i]
+
+avg_authority = avg_authority/len(authority)
+
 bw_words = []
 d_words = []
 c_words = []
+pr_words = []
+hub_words = []
+authority_words = []
 
 for i in bw_centrality:
     if bw_centrality[i] > avg_bw:
@@ -218,14 +241,42 @@ for i in d_centrality:
 for i in c_centrality:
     if c_centrality[i] > avg_c:
         c_words.append(i)
+for i in pr:
+    if pr[i] > avg_pr:
+        pr_words.append(i)
+for i in hub:
+    if hub[i] > avg_hub:
+        hub_words.append(i)
+for i in authority:
+    if authority[i] > avg_authority:
+        authority_words.append(i)        
         
-final_words = intersection(bw_words,d_words)
-final_words = intersection(final_words,c_words)
+#Itrating thorugh all words      
+final_words = []        
+for i in bw_centrality:
+    count = 0
+    if i in bw_words:
+        count = count + 1
+    if i in d_words:
+        count = count + 1
+    if i in c_words:
+        count = count + 1
+    if i in pr_words:
+        count = count + 1
+    if i in hub_words:
+        count = count + 1
+    if i in authority_words:
+        count = count + 1    
+    
+    if count >= 3:
+        final_words.append(i)
+        
 
 final_query = ""
 
 for i in final_words:
-    final_query += i + " "
+    if i not in filtered_sentence:
+        final_query += i + " "
 
 # =============================================================================
 # print (bw_centrality)
