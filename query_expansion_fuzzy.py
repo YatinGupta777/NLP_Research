@@ -28,7 +28,7 @@ stop_words=set(stopwords.words("english"))
 # fout = open("QUERIES_for_training_Expanded","w", encoding="utf-8")
 # 
 # =============================================================================
-test_string = "Homemade glass cleaner ?"
+test_string = "Inventions in science and technology ?"
 
 word_data = []
 
@@ -77,101 +77,105 @@ for i in tagged:
 filtered_sentence = x
 '''STEMMING'''
 x = []
-for i in filtered_sentence:
-    x.append(stemming(i))
-filtered_sentence = x
+#for i in filtered_sentence:
+#    x.append(stemming(i))
+#filtered_sentence = x
+
+'''Wordnet graph'''
 
 for x in filtered_sentence:
-    word = Word(x)
-    if(len(word.synsets) > 1):
-        w = word.synsets[1]
-        word_data.append(w.name().partition('.')[0])
-    
-        G.add_node(w.name().partition('.')[0])
-        for h in w.hypernyms():
-            #print (h)
-            word_data.append(h.name().partition('.')[0])
-            G.add_node(h.name().partition('.')[0])
-            G.add_edge(w.name().partition('.')[0],h.name().partition('.')[0])
-            
-            for k in h.hypernyms():
+        try:
+            word = Word(x)
+            if(len(word.synsets) > 1):
+                w = word.synsets[1]
+            word_data.append(w.name().partition('.')[0])
+        
+            G.add_node(w.name().partition('.')[0])
+            for h in w.hypernyms():
                 #print (h)
-                word_data.append(k.name().partition('.')[0])
-                G.add_node(k.name().partition('.')[0])
-                G.add_edge(h.name().partition('.')[0],k.name().partition('.')[0])
+                word_data.append(h.name().partition('.')[0])
+                G.add_node(h.name().partition('.')[0])
+                G.add_edge(w.name().partition('.')[0],h.name().partition('.')[0])
                 
-                for j in k.hypernyms():
+                for k in h.hypernyms():
                     #print (h)
-                    word_data.append(j.name().partition('.')[0])
-                    G.add_node(j.name().partition('.')[0])
-                    G.add_edge(k.name().partition('.')[0],j.name().partition('.')[0])
+                    word_data.append(k.name().partition('.')[0])
+                    G.add_node(k.name().partition('.')[0])
+                    G.add_edge(h.name().partition('.')[0],k.name().partition('.')[0])
                     
-                for j in k.hyponyms():
+                    for j in k.hypernyms():
+                        #print (h)
+                        word_data.append(j.name().partition('.')[0])
+                        G.add_node(j.name().partition('.')[0])
+                        G.add_edge(k.name().partition('.')[0],j.name().partition('.')[0])
+                        
+                    for j in k.hyponyms():
+                        #print (h)
+                        word_data.append(j.name().partition('.')[0])
+                        G.add_node(j.name().partition('.')[0])
+                        G.add_edge(k.name().partition('.')[0],j.name().partition('.')[0])   
+                    
+                for k in h.hyponyms():
                     #print (h)
-                    word_data.append(j.name().partition('.')[0])
-                    G.add_node(j.name().partition('.')[0])
-                    G.add_edge(k.name().partition('.')[0],j.name().partition('.')[0])   
+                    word_data.append(k.name().partition('.')[0])
+                    G.add_node(k.name().partition('.')[0])
+                    G.add_edge(h.name().partition('.')[0],k.name().partition('.')[0])    
+                    
+                    for j in k.hypernyms():
+                        #print (h)
+                        word_data.append(j.name().partition('.')[0])
+                        G.add_node(j.name().partition('.')[0])
+                        G.add_edge(k.name().partition('.')[0],j.name().partition('.')[0])
+                        
+                    for j in k.hyponyms():
+                        #print (h)
+                        word_data.append(j.name().partition('.')[0])
+                        G.add_node(j.name().partition('.')[0])
+                        G.add_edge(k.name().partition('.')[0],j.name().partition('.')[0])   
                 
-            for k in h.hyponyms():
+            for h in w.hyponyms():
                 #print (h)
-                word_data.append(k.name().partition('.')[0])
-                G.add_node(k.name().partition('.')[0])
-                G.add_edge(h.name().partition('.')[0],k.name().partition('.')[0])    
-                
-                for j in k.hypernyms():
+                word_data.append(h.name().partition('.')[0])
+                G.add_node(h.name().partition('.')[0])
+                G.add_edge(w.name().partition('.')[0],h.name().partition('.')[0])
+                        
+                for k in h.hypernyms():
                     #print (h)
-                    word_data.append(j.name().partition('.')[0])
-                    G.add_node(j.name().partition('.')[0])
-                    G.add_edge(k.name().partition('.')[0],j.name().partition('.')[0])
+                    word_data.append(k.name().partition('.')[0])
+                    G.add_node(k.name().partition('.')[0])
+                    G.add_edge(h.name().partition('.')[0],k.name().partition('.')[0])
                     
-                for j in k.hyponyms():
-                    #print (h)
-                    word_data.append(j.name().partition('.')[0])
-                    G.add_node(j.name().partition('.')[0])
-                    G.add_edge(k.name().partition('.')[0],j.name().partition('.')[0])   
-            
-        for h in w.hyponyms():
-            #print (h)
-            word_data.append(h.name().partition('.')[0])
-            G.add_node(h.name().partition('.')[0])
-            G.add_edge(w.name().partition('.')[0],h.name().partition('.')[0])
+                    for j in k.hypernyms():
+                        #print (h)
+                        word_data.append(j.name().partition('.')[0])
+                        G.add_node(j.name().partition('.')[0])
+                        G.add_edge(k.name().partition('.')[0],j.name().partition('.')[0])
+                        
+                    for j in k.hyponyms():
+                        #print (h)
+                        word_data.append(j.name().partition('.')[0])
+                        G.add_node(j.name().partition('.')[0])
+                        G.add_edge(k.name().partition('.')[0],j.name().partition('.')[0])   
                     
-            for k in h.hypernyms():
-                #print (h)
-                word_data.append(k.name().partition('.')[0])
-                G.add_node(k.name().partition('.')[0])
-                G.add_edge(h.name().partition('.')[0],k.name().partition('.')[0])
-                
-                for j in k.hypernyms():
+                for k in h.hyponyms():
                     #print (h)
-                    word_data.append(j.name().partition('.')[0])
-                    G.add_node(j.name().partition('.')[0])
-                    G.add_edge(k.name().partition('.')[0],j.name().partition('.')[0])
+                    word_data.append(k.name().partition('.')[0])
+                    G.add_node(k.name().partition('.')[0])
+                    G.add_edge(h.name().partition('.')[0],k.name().partition('.')[0])    
                     
-                for j in k.hyponyms():
-                    #print (h)
-                    word_data.append(j.name().partition('.')[0])
-                    G.add_node(j.name().partition('.')[0])
-                    G.add_edge(k.name().partition('.')[0],j.name().partition('.')[0])   
-                
-            for k in h.hyponyms():
-                #print (h)
-                word_data.append(k.name().partition('.')[0])
-                G.add_node(k.name().partition('.')[0])
-                G.add_edge(h.name().partition('.')[0],k.name().partition('.')[0])    
-                
-                for j in k.hypernyms():
-                    #print (h)
-                    word_data.append(j.name().partition('.')[0])
-                    G.add_node(j.name().partition('.')[0])
-                    G.add_edge(k.name().partition('.')[0],j.name().partition('.')[0])
-                    
-                for j in k.hyponyms():
-                    #print (h)
-                    word_data.append(j.name().partition('.')[0])
-                    G.add_node(j.name().partition('.')[0])
-                    G.add_edge(k.name().partition('.')[0],j.name().partition('.')[0])
-
+                    for j in k.hypernyms():
+                        #print (h)
+                        word_data.append(j.name().partition('.')[0])
+                        G.add_node(j.name().partition('.')[0])
+                        G.add_edge(k.name().partition('.')[0],j.name().partition('.')[0])
+                        
+                    for j in k.hyponyms():
+                        #print (h)
+                        word_data.append(j.name().partition('.')[0])
+                        G.add_node(j.name().partition('.')[0])
+                        G.add_edge(k.name().partition('.')[0],j.name().partition('.')[0])
+        except AttributeError as e: 
+            continue
 for u,v,a in G.edges(data=True):
     try:
         x = model.similarity(u,v)
@@ -277,7 +281,7 @@ final_query = ""
 for i in final_words:
     if i not in filtered_sentence:
         final_query += i + " "
-
+print (final_query)
 # =============================================================================
 # print (bw_centrality)
 # print (d_centrality)
@@ -336,4 +340,15 @@ nx.draw(G, width=2, with_labels=True)
 #Source
 #http://intelligentonlinetools.com/blog/2016/09/05/getting-wordnet-information-and-building-and-building-graph-with-python-and-networkx/
 #https://github.com/ellisa1419/Wordnet-Query-Expansion
+# =============================================================================
+# nyms = ['hypernyms', 'hyponyms', 'meronyms', 'holonyms', 'part_meronyms', 'sisterm_terms', 'troponyms', 'inherited_hypernyms']
+# for x in filtered_sentence:
+#     for synset in (wordnet.synsets(x)):
+#         for i in nyms:
+#             try:
+#                 print (getattr(synset, i))
+#             except AttributeError as e: 
+#                 print (e)
+#                 continue
+# =============================================================================
 
