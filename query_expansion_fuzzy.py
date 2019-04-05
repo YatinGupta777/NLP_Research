@@ -394,14 +394,14 @@ print (final_query)
 
 #print(G.neighbors())
 '''Creating small subgraphs for concerned words'''
-for idx,val in enumerate(final_words):
-    source = val
-    depth = 2 #look for those within length 3.
-    foundset = {key for key in nx.single_source_shortest_path(G,source,cutoff=depth).keys()}
-    H=G.subgraph(foundset)
-    pos=nx.spring_layout(H,k=0.2)
-    plt.figure(idx)
-    nx.draw(H,pos,with_labels=True)
+#for idx,val in enumerate(final_words):
+source = final_words[0]
+depth = 2 #look for those within length 3.
+foundset = {key for key in nx.single_source_shortest_path(G,source,cutoff=depth).keys()}
+H=G.subgraph(foundset)
+pos=nx.spring_layout(H,k=0.2)
+plt.figure(1)
+nx.draw(H,pos,with_labels=True)
 #labels = nx.get_edge_attributes(H,'weight')
 #nx.draw_networkx_edge_labels(H,pos,edge_labels=labels)
 # =============================================================================
