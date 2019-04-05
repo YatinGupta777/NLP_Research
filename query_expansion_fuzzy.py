@@ -381,11 +381,29 @@ print (final_query)
 #         fout.write('\n')
 # =============================================================================
 
-plt.show()
-nx.draw(G, width=2, with_labels=True)
-#plt.savefig("path.png")
+'''Creating whole graph G'''
+# =============================================================================
+# pos=nx.spring_layout(G,k=0.2)
+# nx.draw(G,pos,with_labels=True)
+# labels = nx.get_edge_attributes(G,'weight')
+# nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
+# #plt.savefig("path.png")
+# plt.show()
+# =============================================================================
 
 
+#print(G.neighbors())
+'''Creating small subgraphs for concerned words'''
+for idx,val in enumerate(final_words):
+    source = val
+    depth = 2 #look for those within length 3.
+    foundset = {key for key in nx.single_source_shortest_path(G,source,cutoff=depth).keys()}
+    H=G.subgraph(foundset)
+    pos=nx.spring_layout(H,k=0.2)
+    plt.figure(idx)
+    nx.draw(H,pos,with_labels=True)
+#labels = nx.get_edge_attributes(H,'weight')
+#nx.draw_networkx_edge_labels(H,pos,edge_labels=labels)
 # =============================================================================
 # f.close()
 # fout.close()
