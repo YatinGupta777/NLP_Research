@@ -28,7 +28,7 @@ stop_words=set(stopwords.words("english"))
 # fout = open("QUERIES_for_training_Expanded","w", encoding="utf-8")
 # 
 # =============================================================================
-test_string = "Inventions in science and technology ?"
+test_string = "Inventions in science and technology?"
 
 word_data = []
 
@@ -174,8 +174,17 @@ for x in filtered_sentence:
                         word_data.append(j.name().partition('.')[0])
                         G.add_node(j.name().partition('.')[0])
                         G.add_edge(k.name().partition('.')[0],j.name().partition('.')[0])
+                        
+            #for h in w.part_holonyms():
+             #   print("A")
+            #for h in w.part_meronyms():
+             #   print("B")
+            #for h in w.entailments():
+             #   print("C")
+
         except AttributeError as e: 
             continue
+        
 for u,v,a in G.edges(data=True):
     try:
         x = model.similarity(u,v)
@@ -236,29 +245,76 @@ pr_words = []
 hub_words = []
 authority_words = []
 
-for i in bw_centrality:
-    if bw_centrality[i] > avg_bw:
-        bw_words.append(i)
-for i in d_centrality:
-    if d_centrality[i] > avg_d:
-        d_words.append(i)
-for i in c_centrality:
-    if c_centrality[i] > avg_c:
-        c_words.append(i)
-for i in pr:
-    if pr[i] > avg_pr:
-        pr_words.append(i)
-for i in hub:
-    if hub[i] > avg_hub:
-        hub_words.append(i)
-for i in authority:
-    if authority[i] > avg_authority:
-        authority_words.append(i)        
+count = 10
+x = 0
+for w in sorted(bw_centrality, key=bw_centrality.get, reverse=True):
+  bw_words.append(w)
+  x = x + 1
+  if x >= count:
+      break
+x = 0  
+for w in sorted(d_centrality, key=d_centrality.get, reverse=True):
+  d_words.append(w)
+  x = x + 1
+  if x >= count:
+      break
+x = 0    
+for w in sorted(c_centrality, key=c_centrality.get, reverse=True):
+  c_words.append(w)
+  x = x + 1
+  if x >= count:
+      break  
+x = 0    
+for w in sorted(pr, key=pr.get, reverse=True):
+  pr_words.append(w)
+  x = x + 1
+  if x >= count:
+      break
+x = 0    
+for w in sorted(hub, key=hub.get, reverse=True):
+  hub_words.append(w)
+  x = x + 1
+  if x >= count:
+      break
+x = 0    
+for w in sorted(authority, key=authority.get, reverse=True):
+  authority_words.append(w)
+  x = x + 1
+  if x >= count:
+      break
+
+
+
+# =============================================================================
+# '''Using greater than avg '''
+# for i in bw_centrality:
+#     if bw_centrality[i] > avg_bw:
+#         bw_words.append(i)
+# for i in d_centrality:
+#     if d_centrality[i] > avg_d:
+#         d_words.append(i)
+# for i in c_centrality:
+#     if c_centrality[i] > avg_c:
+#         c_words.append(i)
+# for i in pr:
+#     if pr[i] > avg_pr:
+#         pr_words.append(i)
+# for i in hub:
+#     if hub[i] > avg_hub:
+#         hub_words.append(i)
+# for i in authority:
+#     if authority[i] > avg_authority:
+#         authority_words.append(i)        
+# =============================================================================
         
 #Itrating thorugh all words      
-final_words = []        
+
+final_words = []   
+     
 for i in bw_centrality:
     count = 0
+    if i in filtered_sentence:
+        continue
     if i in bw_words:
         count = count + 1
     if i in d_words:
@@ -272,7 +328,7 @@ for i in bw_centrality:
     if i in authority_words:
         count = count + 1    
     
-    if count >= 3:
+    if count >= 3 :
         final_words.append(i)
         
 
@@ -325,7 +381,6 @@ print (final_query)
 #         fout.write('\n')
 # =============================================================================
 
-#print (G.nodes(data=True))
 plt.show()
 nx.draw(G, width=2, with_labels=True)
 #plt.savefig("path.png")
@@ -336,10 +391,6 @@ nx.draw(G, width=2, with_labels=True)
 # fout.close()
 # =============================================================================
 
-
-#Source
-#http://intelligentonlinetools.com/blog/2016/09/05/getting-wordnet-information-and-building-and-building-graph-with-python-and-networkx/
-#https://github.com/ellisa1419/Wordnet-Query-Expansion
 # =============================================================================
 # nyms = ['hypernyms', 'hyponyms', 'meronyms', 'holonyms', 'part_meronyms', 'sisterm_terms', 'troponyms', 'inherited_hypernyms']
 # for x in filtered_sentence:
@@ -350,5 +401,10 @@ nx.draw(G, width=2, with_labels=True)
 #             except AttributeError as e: 
 #                 print (e)
 #                 continue
-# =============================================================================
+# ============================================================================
 
+#Source
+#http://intelligentonlinetools.com/blog/2016/09/05/getting-wordnet-information-and-building-and-building-graph-with-python-and-networkx/
+#https://github.com/ellisa1419/Wordnet-Query-Expansion
+
+#http://intelligentonlinetools.com/blog/2016/09/05/getting-wordnet-information-and-building-and-building-graph-with-python-and-networkx/
