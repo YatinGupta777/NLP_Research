@@ -1,3 +1,3 @@
 # NLP_Research
 
-Using c Fuzzy Means algorithm for implementation.
+Different things tried for nlp research work
