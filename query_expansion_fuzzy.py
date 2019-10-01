@@ -15,21 +15,16 @@ from textblob import Word
 import re
 import gensim 
 from gensim.models import KeyedVectors
+from collections import OrderedDict
 
 # Load vectors directly from the file
 model = KeyedVectors.load_word2vec_format('GoogleNews-vectors-negative300.bin', binary=True)
 G=nx.Graph()
 stop_words=set(stopwords.words("english"))
 
+test_string = "creative work in art and history?"
 
-# =============================================================================
-# str = "123456790abcdefABCDEF!@#$%^&*()_+<>?,./"
-# f = open("questions.txt","r")
-# fout = open("QUERIES_for_training_Expanded","w", encoding="utf-8")
-# 
-# =============================================================================
-test_string = "Inventions in science and technology?"
-
+test_string = test_string.lower()
 word_data = []
 
 def stemming(word):
@@ -41,24 +36,6 @@ def stemming(word):
     return stemmed   
 def intersection(lst1, lst2): 
     return list(set(lst1) & set(lst2))
-'''Creating bag of words'''
-# =============================================================================
-# with open('questions.txt',encoding="ISO-8859-1",newline='') as f:
-#    
-#     for line in f:
-#     
-#         if line and not line.startswith("<"):
-#             #print(line)
-#             line=line.replace('\n','')
-#             wordsList = nltk.word_tokenize(line) 
-#             filtered_sentence = [w for w in wordsList if not w in stop_words]
-#             for i in filtered_sentence:
-#                 stemming(i)
-# 
-#             for x in filtered_sentence:
-#                 word_data.append(x)
-# =============================================================================
-
 '''For Test String'''
 
 '''POS TAGGING'''
@@ -76,7 +53,7 @@ for i in tagged:
     
 filtered_sentence = x
 '''STEMMING'''
-x = []
+#x = []
 #for i in filtered_sentence:
 #    x.append(stemming(i))
 #filtered_sentence = x
@@ -247,6 +224,9 @@ authority_words = []
 
 count = 10
 x = 0
+#To sort dict in decreasing order
+sorted_authority = (sorted(((value, key) for (key,value) in authority.items()),reverse=True))
+
 for w in sorted(bw_centrality, key=bw_centrality.get, reverse=True):
   bw_words.append(w)
   x = x + 1
@@ -283,8 +263,6 @@ for w in sorted(authority, key=authority.get, reverse=True):
   if x >= count:
       break
 
-
-
 # =============================================================================
 # '''Using greater than avg '''
 # for i in bw_centrality:
@@ -310,7 +288,9 @@ for w in sorted(authority, key=authority.get, reverse=True):
 #Itrating thorugh all words      
 
 final_words = []   
-     
+for i in filtered_sentence: 
+    final_words.append(i)
+    
 for i in bw_centrality:
     count = 0
     if i in filtered_sentence:
@@ -330,13 +310,16 @@ for i in bw_centrality:
     
     if count >= 3 :
         final_words.append(i)
-        
-
+       
 final_query = ""
+
+for i in filtered_sentence: 
+    final_query += i + " "
 
 for i in final_words:
     if i not in filtered_sentence:
         final_query += i + " "
+        
 print (final_query)
 # =============================================================================
 # print (bw_centrality)
@@ -382,28 +365,29 @@ print (final_query)
 # =============================================================================
 
 '''Creating whole graph G'''
-# =============================================================================
-# pos=nx.spring_layout(G,k=0.2)
-# nx.draw(G,pos,with_labels=True)
-# labels = nx.get_edge_attributes(G,'weight')
-# nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
-# #plt.savefig("path.png")
-# plt.show()
-# =============================================================================
+pos=nx.spring_layout(G,k=0.2)
+nx.draw(G,pos,with_labels=True)
+labels = nx.get_edge_attributes(G,'weight')
+#to show edge weights
+nx.draw_networkx_edge_labels(G,pos,edge_labels=labels)
+#plt.savefig("path.png")
+plt.show()
 
 
 #print(G.neighbors())
 '''Creating small subgraphs for concerned words'''
 #for idx,val in enumerate(final_words):
-source = final_words[0]
-depth = 2 #look for those within length 3.
-foundset = {key for key in nx.single_source_shortest_path(G,source,cutoff=depth).keys()}
-H=G.subgraph(foundset)
-pos=nx.spring_layout(H,k=0.2)
-plt.figure(1)
-nx.draw(H,pos,with_labels=True)
-#labels = nx.get_edge_attributes(H,'weight')
-#nx.draw_networkx_edge_labels(H,pos,edge_labels=labels)
+# =============================================================================
+# source = final_words[0]
+# depth = 2 #look for those within length 2.
+# foundset = {key for key in nx.single_source_shortest_path(G,source,cutoff=depth).keys()}
+# H=G.subgraph(foundset)
+# pos=nx.spring_layout(H,k=0.2)
+# plt.figure(2)
+# nx.draw(H,pos,with_labels=True)
+# labels = nx.get_edge_attributes(H,'weight')
+# nx.draw_networkx_edge_labels(H,pos,edge_labels=labels)
+# =============================================================================
 # =============================================================================
 # f.close()
 # fout.close()
